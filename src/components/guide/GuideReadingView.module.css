@@ -1,0 +1,122 @@
+.view {
+  min-height: 100vh;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* These variables are inherited only inside the public fiche, never by html/body. */
+.view[data-colorblind="true"] {
+  --background: #ffffff;
+  --foreground: #17212b;
+  --primary: #005a8d;
+  --primary-foreground: #ffffff;
+  --muted: #edf2f7;
+  --muted-foreground: #364152;
+  --accent: #edf2f7;
+  --accent-foreground: #17212b;
+  --border: #667085;
+  --input: #667085;
+  --ring: #005a8d;
+  --section-essentials: #005a8d;
+  --section-prepare: #704200;
+  --section-warning: #49388a;
+  --section-glossary: #364152;
+}
+
+.view[data-colorblind="true"] article [role="note"] {
+  border: 2px dashed var(--section-warning);
+  background-color: #f5f1ff;
+}
+
+.view[data-colorblind="true"] article label:has(input:checked) {
+  border: 2px solid var(--section-prepare);
+  font-weight: 700;
+}
+
+.modeButton[aria-pressed="true"] {
+  border-color: var(--primary);
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.view :is(button, a, input):focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 3px;
+}
+
+.view[data-dyslexic="true"] {
+  --background: #fffaf0;
+  --foreground: #242424;
+  --muted-foreground: #454545;
+  font-family: var(--font-sans), Arial, sans-serif;
+  letter-spacing: 0.12em;
+  word-spacing: 0.16em;
+  line-height: 1.8;
+  text-align: left;
+}
+
+.view[data-dyslexic="true"] article {
+  max-width: 56ch;
+  font-size: 1.25rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.view[data-dyslexic="true"] article :is(h1, h2, p, footer) {
+  line-height: 1.8;
+  letter-spacing: inherit;
+}
+
+.view[data-dyslexic="true"] article h1 {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  text-wrap: wrap;
+}
+
+.view[data-dyslexic="true"] article h2 {
+  align-items: flex-start;
+  font-size: 1.5rem;
+}
+
+.view[data-dyslexic="true"] article h2 svg {
+  flex-shrink: 0;
+  margin-top: 0.3em;
+}
+
+.view[data-dyslexic="true"] article header p {
+  text-transform: none;
+}
+
+.view[data-dyslexic="true"] article header p,
+.view[data-dyslexic="true"] article footer {
+  font-size: 1rem;
+}
+
+.view[data-dyslexic="true"] article :is(ol, ul) > li + li {
+  margin-top: 1.5em;
+}
+
+.view[data-dyslexic="true"] article dl > div {
+  padding-block: 1.5em;
+}
+
+.view[data-dyslexic="true"] article dd {
+  margin-top: 0.5em;
+}
+
+.view[data-dyslexic="true"] article p {
+  margin-bottom: 2em;
+}
+
+.view[data-dyslexic="true"] :is(button, a) {
+  height: auto;
+  min-height: 2.75rem;
+  padding-block: 0.5rem;
+  white-space: normal;
+}
+
+@media print {
+  .view {
+    min-height: auto;
+    background-color: white;
+  }
+}
