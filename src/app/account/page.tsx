@@ -1,7 +1,10 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/server/auth";
 import { signOutAction } from "@/server/actions";
 import { AuthShell, SubmitButton } from "@/components/auth/ui";
+import { Button } from "@/components/ui/button";
+import { isAdmin } from "@/server/roles";
 
 // Protected by middleware.ts; we re-check here so the page is safe on its own.
 export default async function AccountPage() {
@@ -25,6 +28,11 @@ export default async function AccountPage() {
         </div>
       </dl>
       <div className="mt-6 grid gap-2">
+        {isAdmin(session.user) && (
+          <Button asChild variant="outline" className="h-10">
+            <Link href="/admin">Espace admin</Link>
+          </Button>
+        )}
         <form action={signOutAction}>
           <SubmitButton>Se déconnecter</SubmitButton>
         </form>
