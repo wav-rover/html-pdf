@@ -7,7 +7,6 @@ import { guideContentSchema, type GuideContent } from "@/lib/guide-content";
 import { isGuideParseError, parseGuidePdf } from "@/lib/parse-guide-pdf";
 import slugify from "@/lib/slugify";
 import { db } from "./db";
-import requireAdmin from "./require-admin";
 
 export type ImportState = { error?: string };
 
@@ -17,8 +16,6 @@ const statusSchema = z.enum(["DRAFT", "PUBLISHED"]);
 
 /** Parses an uploaded PDF and stores it as a draft, then opens the editor. */
 export async function importGuideAction(_state: ImportState, formData: FormData): Promise<ImportState> {
-  await requireAdmin();
-
   const file = formData.get("pdf");
   if (!(file instanceof File) || file.size === 0 || file.type !== "application/pdf") {
     return { error: "Choisis un fichier PDF." };
@@ -45,8 +42,6 @@ export async function importGuideAction(_state: ImportState, formData: FormData)
 }
 
 export async function updateGuideAction(id: string, content: GuideContent): Promise<{ error?: string }> {
-  await requireAdmin();
-
   const parsed = guideContentSchema.safeParse(content);
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "Saisie invalide" };
 
@@ -61,8 +56,6 @@ export async function updateGuideAction(id: string, content: GuideContent): Prom
 }
 
 export async function setGuideStatusAction(id: string, status: "DRAFT" | "PUBLISHED"): Promise<void> {
-  await requireAdmin();
-
   const nextStatus = statusSchema.parse(status);
   const guide = await db.guide.update({
     where: { id },
@@ -74,8 +67,6 @@ export async function setGuideStatusAction(id: string, status: "DRAFT" | "PUBLIS
 }
 
 export async function deleteGuideAction(id: string): Promise<void> {
-  await requireAdmin();
-
   const guide = await db.guide.delete({ where: { id }, select: { slug: true } });
   revalidateGuide(guide.slug);
 }

@@ -32,4 +32,4 @@ export const getAllGuides = () => db.guide.findMany({ select: guideSelect, order
 export const getGuideById = (id: string) => db.guide.findUnique({ where: { id }, select: guideSelect });
 
 export const getGuidePdfBySlug = (slug: string) =>
-  db.guide.findUnique({ where: { slug }, select: { pdf: true, pdfName: true, status: true } });
+  db.guide.findUnique({ where: { slug }, select: { pdf: true, pdfName: true } });

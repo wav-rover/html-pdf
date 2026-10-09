@@ -1,13 +1,9 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { ExternalLink, FileUp, LogOut } from "lucide-react";
+import { ExternalLink, FileUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { signOutAction } from "@/server/actions";
-import requireAdmin from "@/server/require-admin";
 
-export default async function AdminLayout({ children }: { children: ReactNode }) {
-  await requireAdmin();
-
+export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-muted/40">
       <header className="border-b bg-background">
@@ -27,11 +23,6 @@ export default async function AdminLayout({ children }: { children: ReactNode })
               Voir le site
             </Link>
           </Button>
-          <form action={signOutAction}>
-            <Button type="submit" variant="ghost" size="lg" aria-label="Se déconnecter">
-              <LogOut />
-            </Button>
-          </form>
         </div>
       </header>
       <div className="mx-auto max-w-7xl px-4 py-8">{children}</div>

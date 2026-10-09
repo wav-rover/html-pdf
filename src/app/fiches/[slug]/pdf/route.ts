@@ -1,12 +1,9 @@
-import { auth } from "@/server/auth";
 import { getGuidePdfBySlug } from "@/server/guides";
-import { isAdmin } from "@/server/roles";
 
-/** Serves the original PDF: published guides for everyone, drafts for admins only. */
+/** Serves the original PDF (drafts included, so the editor can show it). */
 export const GET = async (_request: Request, { params }: { params: Promise<{ slug: string }> }) => {
   const guide = await getGuidePdfBySlug((await params).slug);
-  const canRead = guide && (guide.status === "PUBLISHED" || isAdmin((await auth())?.user));
-  if (!canRead) return new Response("Fiche introuvable", { status: 404 });
+  if (!guide) return new Response("Fiche introuvable", { status: 404 });
 
   return new Response(Buffer.from(guide.pdf), {
     headers: {
