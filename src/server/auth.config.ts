@@ -1,5 +1,5 @@
 import type { NextAuthConfig } from "next-auth";
-import type { Role } from "./roles";
+import { isAdmin, type Role } from "./roles";
 
 /**
  * Edge-safe Auth.js configuration. This file must NOT import the database or
@@ -16,9 +16,8 @@ export const authConfig = {
   callbacks: {
     /** Route guard evaluated by the middleware. */
     authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user;
-      const isProtected = nextUrl.pathname.startsWith("/account");
-      if (isProtected) return isLoggedIn;
+      if (nextUrl.pathname.startsWith("/admin")) return isAdmin(auth?.user);
+      if (nextUrl.pathname.startsWith("/account")) return !!auth?.user;
       return true;
     },
     jwt({ token, user }) {

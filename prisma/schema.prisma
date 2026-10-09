@@ -65,3 +65,23 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+enum GuideStatus {
+  DRAFT
+  PUBLISHED
+}
+
+// A "fiche mémo" imported from a PDF. `content` follows `guideContentSchema`
+// (src/lib/guide-content.ts); `title` is duplicated for listing and search.
+model Guide {
+  id          String      @id @default(cuid())
+  slug        String      @unique
+  title       String
+  status      GuideStatus @default(DRAFT)
+  content     Json
+  pdf         Bytes
+  pdfName     String
+  publishedAt DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}

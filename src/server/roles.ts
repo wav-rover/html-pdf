@@ -3,3 +3,5 @@
  * lives here so the Auth.js config stays independent of the chosen ORM.
  */
 export type Role = "USER" | "ADMIN";
+
+export const isAdmin = (user?: { role?: Role } | null) => user?.role === "ADMIN";
