@@ -1,5 +1,5 @@
 import { getDocumentProxy } from "unpdf";
-import type { GuideContent } from "./guide-content";
+import { toGlossaryEntry, type GuideContent } from "./guide-content";
 
 export type PdfLine = { text: string; size: number; y: number };
 
@@ -111,10 +111,4 @@ const joinLines = (texts: string[]) => texts.join(" ").replace(/\s+/g, " ").trim
 const mostFrequent = (values: number[]) => {
   const counts = values.reduce((map, value) => map.set(value, (map.get(value) ?? 0) + 1), new Map<number, number>());
   return [...counts.entries()].sort((a, b) => b[1] - a[1])[0]?.[0];
-};
-
-const toGlossaryEntry = (item: string) => {
-  const separator = item.indexOf(" = ");
-  if (separator === -1) return { term: item.trim(), definition: "" };
-  return { term: item.slice(0, separator).trim(), definition: item.slice(separator + 3).trim() };
 };

@@ -17,3 +17,13 @@ export const guideContentSchema = z.object({
 });
 
 export type GuideContent = z.infer<typeof guideContentSchema>;
+
+/** Glossary bullets are written "term = definition" in the PDFs and in the editor. */
+export const toGlossaryEntry = (item: string) => {
+  const separator = item.indexOf(" = ");
+  if (separator === -1) return { term: item.trim(), definition: "" };
+  return { term: item.slice(0, separator).trim(), definition: item.slice(separator + 3).trim() };
+};
+
+export const fromGlossaryEntry = ({ term, definition }: { term: string; definition: string }) =>
+  definition === "" ? term : `${term} = ${definition}`;
