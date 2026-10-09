@@ -11,7 +11,7 @@ export default function GuideArticle({ content }: { content: GuideContent }) {
     <article className="mx-auto max-w-2xl space-y-10 text-lg leading-relaxed">
       <header className="space-y-3 border-b pb-6">
         {subtitle !== "" && <p className="text-sm font-bold tracking-wide text-primary uppercase">{subtitle}</p>}
-        <h1 className="text-3xl leading-tight font-bold text-balance sm:text-4xl">{title}</h1>
+        <h1 className="font-heading text-3xl leading-tight font-bold text-balance sm:text-4xl">{title}</h1>
       </header>
 
       {steps.length > 0 && (
@@ -90,7 +90,7 @@ const GuideSection = ({
   children: ReactNode;
 }) => (
   <section className="space-y-4">
-    <h2 className={cn("flex items-center gap-2 text-2xl font-bold", className)}>
+    <h2 className={cn("flex items-center gap-2 font-heading text-2xl font-bold", className)}>
       <Icon className="size-6" />
       {title}
     </h2>

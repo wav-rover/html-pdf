@@ -1,51 +1,28 @@
-# pdf-to-html
+# Fiches pratiques
 
-Generated with [Stackr](https://github.com/Tristan-stack/stackr) — a runnable full-stack Next.js starter.
+Transforme les fiches mémo PDF (« La Formation pour tous ») en pages web lisibles par les patients.
 
-## Stack
-
-- **Architecture:** Monolith
-- **Database:** PostgreSQL
-- **ORM:** Prisma
-- **Auth:** NextAuth (Auth.js)
-- **Styling:** Tailwind CSS
-
-### Interfaces
-
-- Auth portal (login / register / reset)
-
-## Getting started
+## Démarrer
 
 ```bash
-# 1. Start a local PostgreSQL (requires Docker)
-docker compose up -d
-
-# 2. Install dependencies
 npm install
-
-# 3. Create the database schema
-npx prisma migrate dev --name init
-
-# Run the app
+npx prisma migrate dev   # crée les tables dans la base de DATABASE_URL
 npm run dev
 ```
 
-Then open [http://localhost:3000](http://localhost:3000).
+## Utilisation (démo, sans connexion)
 
-- Register a new account at `/register`, then sign in at `/login`.
-- `/account` is a protected route.
+1. `/admin/import` : dépose une fiche PDF, son contenu est extrait automatiquement.
+2. `/admin/fiches/[id]` : corrige les champs, compare avec le PDF original, aperçu mobile/desktop en direct, puis **Publier**.
+3. `/` liste les fiches publiées, `/fiches/[slug]` affiche la fiche (imprimable, PDF téléchargeable).
 
-## Environment
-
-Copy `.env.example` to `.env` and adjust as needed. A working `.env` with a
-generated `AUTH_SECRET` was already created for you.
+Les PDF doivent suivre la trame des fiches mémo : titre, sous-titre, sections « L'essentiel », « À prévoir », « Points de vigilance », « À comprendre » (`terme = définition`), source en pied de page.
 
 ## Scripts
 
-| Script | Description |
-| ------ | ----------- |
-| `npm run dev` | Start the dev server |
-| `npm run build` | Production build |
-| `npm run db:migrate` | Run Prisma migrations |
-| `npm run db:studio` | Open Prisma Studio |
-| `npm run typecheck` | Type-check without emitting |
+| Script | Rôle |
+| --- | --- |
+| `npm run dev` | Serveur de dev |
+| `npm test` | Tests du parseur PDF |
+| `npm run typecheck` | Vérification TypeScript |
+| `npm run build` | Build de production |

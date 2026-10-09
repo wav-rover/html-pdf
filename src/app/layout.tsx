@@ -1,14 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Atkinson_Hyperlegible } from "next/font/google";
+import { Noto_Sans, Playfair_Display } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
 
-const atkinson = Atkinson_Hyperlegible({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-sans",
-});
+const notoSans = Noto_Sans({ subsets: ["latin"], variable: "--font-sans" });
+const playfairDisplay = Playfair_Display({ subsets: ["latin"], variable: "--font-heading" });
 
 export const metadata: Metadata = {
   title: { default: "Fiches pratiques", template: "%s · Fiches pratiques" },
@@ -17,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="fr" className={atkinson.variable}>
+    <html lang="fr" className={cn(notoSans.variable, playfairDisplay.variable)}>
       <body className="min-h-screen bg-background font-sans text-foreground antialiased">
         {children}
         <Toaster theme="light" richColors position="top-center" />

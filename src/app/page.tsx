@@ -13,7 +13,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
     <main className="mx-auto max-w-5xl px-4 py-10 sm:py-16">
       <header className="mb-8 max-w-2xl space-y-3">
         <p className="text-sm font-bold tracking-wide text-primary uppercase">La Formation pour tous</p>
-        <h1 className="text-4xl font-bold">Fiches pratiques</h1>
+        <h1 className="font-heading text-4xl font-bold">Fiches pratiques</h1>
         <p className="text-lg text-muted-foreground">
           Des fiches simples pour réaliser vos démarches en ligne, étape par étape.
         </p>
