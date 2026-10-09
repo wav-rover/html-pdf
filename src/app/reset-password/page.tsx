@@ -11,11 +11,11 @@ export default async function ResetPasswordPage({
 
   if (!token) {
     return (
-      <AuthShell title="Reset password">
-        <Alert kind="error">Missing reset token. Request a new link.</Alert>
+      <AuthShell title="Mot de passe oublié">
+        <Alert kind="error">Lien incomplet. Demandez un nouveau lien.</Alert>
         <FooterLinks>
           <p>
-            <TextLink href="/forgot-password">Request reset link</TextLink>
+            <TextLink href="/forgot-password">Demander un nouveau lien</TextLink>
           </p>
         </FooterLinks>
       </AuthShell>
@@ -23,25 +23,25 @@ export default async function ResetPasswordPage({
   }
 
   return (
-    <AuthShell title="Choose a new password">
+    <AuthShell title="Nouveau mot de passe">
       {sp.error && <Alert kind="error">{sp.error}</Alert>}
 
       <form action={resetPasswordAction}>
         <input type="hidden" name="token" value={token} />
         <Field
-          label="New password"
+          label="Nouveau mot de passe"
           name="password"
           type="password"
           autoComplete="new-password"
           minLength={8}
           required
         />
-        <SubmitButton>Update password</SubmitButton>
+        <SubmitButton>Mettre à jour</SubmitButton>
       </form>
 
       <FooterLinks>
         <p>
-          <TextLink href="/login">Back to sign in</TextLink>
+          <TextLink href="/login">Retour à la connexion</TextLink>
         </p>
       </FooterLinks>
     </AuthShell>

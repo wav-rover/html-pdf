@@ -4,27 +4,28 @@ import { Alert, AuthShell, Field, FooterLinks, SubmitButton, TextLink } from "@/
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; reset?: string }>;
+  searchParams: Promise<{ error?: string; reset?: string; callbackUrl?: string }>;
 }) {
   const sp = await searchParams;
 
   return (
-    <AuthShell title="Sign in">
-      {sp.reset && <Alert kind="success">Password updated. Sign in with your new password.</Alert>}
+    <AuthShell title="Connexion">
+      {sp.reset && <Alert kind="success">Mot de passe mis à jour. Connectez-vous avec votre nouveau mot de passe.</Alert>}
       {sp.error && <Alert kind="error">{sp.error}</Alert>}
 
       <form action={loginAction}>
+        <input type="hidden" name="callbackUrl" value={sp.callbackUrl ?? ""} />
         <Field label="Email" name="email" type="email" autoComplete="email" required />
-        <Field label="Password" name="password" type="password" autoComplete="current-password" required />
-        <SubmitButton>Sign in</SubmitButton>
+        <Field label="Mot de passe" name="password" type="password" autoComplete="current-password" required />
+        <SubmitButton>Se connecter</SubmitButton>
       </form>
 
       <FooterLinks>
         <p>
-          No account? <TextLink href="/register">Create one</TextLink>
+          Pas de compte ? <TextLink href="/register">En créer un</TextLink>
         </p>
         <p>
-          <TextLink href="/forgot-password">Forgot your password?</TextLink>
+          <TextLink href="/forgot-password">Mot de passe oublié ?</TextLink>
         </p>
       </FooterLinks>
     </AuthShell>

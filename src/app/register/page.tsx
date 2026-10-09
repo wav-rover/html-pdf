@@ -9,26 +9,26 @@ export default async function RegisterPage({
   const sp = await searchParams;
 
   return (
-    <AuthShell title="Create account">
+    <AuthShell title="Créer un compte">
       {sp.error && <Alert kind="error">{sp.error}</Alert>}
 
       <form action={registerAction}>
-        <Field label="Name" name="name" type="text" autoComplete="name" required />
+        <Field label="Nom" name="name" type="text" autoComplete="name" required />
         <Field label="Email" name="email" type="email" autoComplete="email" required />
         <Field
-          label="Password"
+          label="Mot de passe"
           name="password"
           type="password"
           autoComplete="new-password"
           minLength={8}
           required
         />
-        <SubmitButton>Create account</SubmitButton>
+        <SubmitButton>Créer le compte</SubmitButton>
       </form>
 
       <FooterLinks>
         <p>
-          Already have an account? <TextLink href="/login">Sign in</TextLink>
+          Déjà un compte ? <TextLink href="/login">Se connecter</TextLink>
         </p>
       </FooterLinks>
     </AuthShell>

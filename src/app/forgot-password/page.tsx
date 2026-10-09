@@ -9,23 +9,23 @@ export default async function ForgotPasswordPage({
   const sp = await searchParams;
 
   return (
-    <AuthShell title="Reset password">
+    <AuthShell title="Mot de passe oublié">
       {sp.sent && (
         <Alert kind="success">
-          If an account exists for that email, a reset link has been sent. In dev mode the link is
-          printed to the server console.
+          Si un compte existe pour cet email, un lien de réinitialisation a été envoyé. En
+          développement, le lien est affiché dans la console du serveur.
         </Alert>
       )}
       {sp.error && <Alert kind="error">{sp.error}</Alert>}
 
       <form action={requestPasswordResetAction}>
         <Field label="Email" name="email" type="email" autoComplete="email" required />
-        <SubmitButton>Send reset link</SubmitButton>
+        <SubmitButton>Envoyer le lien</SubmitButton>
       </form>
 
       <FooterLinks>
         <p>
-          <TextLink href="/login">Back to sign in</TextLink>
+          <TextLink href="/login">Retour à la connexion</TextLink>
         </p>
       </FooterLinks>
     </AuthShell>

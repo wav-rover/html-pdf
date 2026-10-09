@@ -9,14 +9,14 @@ import { db } from "./db";
 import { signIn, signOut } from "./auth";
 
 const registerSchema = z.object({
-  name: z.string().min(1, "Name is required").max(100),
-  email: z.string().email("Enter a valid email"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  name: z.string().min(1, "Le nom est obligatoire").max(100),
+  email: z.string().email("Saisissez un email valide"),
+  password: z.string().min(8, "Le mot de passe doit contenir au moins 8 caractères"),
 });
 
 const resetSchema = z.object({
   token: z.string().min(1),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: z.string().min(8, "Le mot de passe doit contenir au moins 8 caractères"),
 });
 
 function err(path: string, message: string): never {
@@ -30,12 +30,12 @@ export async function registerAction(formData: FormData): Promise<void> {
     email: formData.get("email"),
     password: formData.get("password"),
   });
-  if (!parsed.success) err("/register", parsed.error.issues[0]?.message ?? "Invalid input");
+  if (!parsed.success) err("/register", parsed.error.issues[0]?.message ?? "Saisie invalide");
 
   const { name, email, password } = parsed.data;
 
   if (await db.user.findUnique({ where: { email } })) {
-    err("/register", "An account with this email already exists");
+    err("/register", "Un compte existe déjà avec cet email");
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
@@ -49,15 +49,26 @@ export async function registerAction(formData: FormData): Promise<void> {
   }
 }
 
+// Keeps only the path of the callback URL so a crafted link can't redirect off-site.
+const toLocalPath = (callbackUrl: string) => {
+  if (callbackUrl === "") return "/account";
+  const { pathname, search } = new URL(callbackUrl, "http://localhost");
+  return `${pathname}${search}`;
+};
+
 /** Authenticate with email + password. */
 export async function loginAction(formData: FormData): Promise<void> {
   const email = String(formData.get("email") ?? "");
   const password = String(formData.get("password") ?? "");
+  const redirectTo = toLocalPath(String(formData.get("callbackUrl") ?? ""));
 
   try {
-    await signIn("credentials", { email, password, redirectTo: "/account" });
+    await signIn("credentials", { email, password, redirectTo });
   } catch (error) {
-    if (error instanceof AuthError) err("/login", "Invalid email or password");
+    if (error instanceof AuthError) {
+      const message = encodeURIComponent("Email ou mot de passe incorrect");
+      redirect(`/login?error=${message}&callbackUrl=${encodeURIComponent(redirectTo)}`);
+    }
     throw error; // re-throw Next's redirect
   }
 }
@@ -73,7 +84,7 @@ export async function signOutAction(): Promise<void> {
  */
 export async function requestPasswordResetAction(formData: FormData): Promise<void> {
   const parsed = z.string().email().safeParse(formData.get("email"));
-  if (!parsed.success) err("/forgot-password", "Enter a valid email");
+  if (!parsed.success) err("/forgot-password", "Saisissez un email valide");
 
   const user = await db.user.findUnique({ where: { email: parsed.data } });
   if (user) {
@@ -98,7 +109,7 @@ export async function resetPasswordAction(formData: FormData): Promise<void> {
     const token = String(formData.get("token") ?? "");
     redirect(
       `/reset-password?token=${encodeURIComponent(token)}&error=${encodeURIComponent(
-        parsed.error.issues[0]?.message ?? "Invalid input",
+        parsed.error.issues[0]?.message ?? "Saisie invalide",
       )}`,
     );
   }
@@ -106,7 +117,7 @@ export async function resetPasswordAction(formData: FormData): Promise<void> {
   const { token, password } = parsed.data;
   const record = await db.verificationToken.findUnique({ where: { token } });
   if (!record || record.expires < new Date()) {
-    err("/reset-password", "This reset link is invalid or has expired");
+    err("/reset-password", "Ce lien est invalide ou a expiré");
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
